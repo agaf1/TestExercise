@@ -1,21 +1,25 @@
 package pl.aga.service;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.aga.repository.AccountRepository;
 import pl.aga.service.model.Transfer;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class BankServiceTest {
+    @Mock
+    private ValidationService validationService;
+    @Mock
+    private AccountRepository accountRepository ;
 
-    private ValidationService validationService = Mockito.mock(ValidationService.class);
-
-    private AccountRepository accountRepository = Mockito.mock(AccountRepository.class);
-
-    private Transfer transfer = new Transfer("account1","account2",5);
-    private BankService bankService = new BankService(validationService,accountRepository);
+    private final Transfer transfer = new Transfer("account1","account2",5);
+    private final BankService bankService = new BankService(validationService,accountRepository);
 
     @Test
     void should_not_transfer_when_from_account_has_to_low_cash(){
