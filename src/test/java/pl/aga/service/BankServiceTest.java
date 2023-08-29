@@ -2,13 +2,16 @@ package pl.aga.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.aga.repository.AccountRepository;
 import pl.aga.service.model.Transaction;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -17,9 +20,9 @@ class BankServiceTest {
     private ValidationService validationService;
     @Mock
     private AccountRepository accountRepository ;
-
+    @InjectMocks
+    private BankService bankService;
     private final Transaction transaction = new Transaction("account1","account2",5);
-    private final BankService bankService = new BankService(validationService,accountRepository);
 
     @Test
     void should_not_transfer_when_from_account_has_to_low_cash(){
@@ -41,9 +44,12 @@ class BankServiceTest {
 
         bankService.transfer(transaction);
 
-        Mockito.verify(accountRepository).saveBalance(eq(transaction.getFrom()),eq(2d));
+        verify(accountRepository).saveBalance(eq(transaction.getFrom()),eq(2d));
 
-        Mockito.verify(accountRepository).saveBalance(eq(transaction.getTo()),eq(8.0));
+        verify(accountRepository).saveBalance(eq(transaction.getTo()),eq(8.0));
+
+        verify(accountRepository).addTransactionHistory(Mockito.argThat(
+                history-> history.getTransaction().equals(transaction) && history.getDateTime() != null));
 
     }
 

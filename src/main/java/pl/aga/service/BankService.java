@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.aga.repository.AccountRepository;
 import pl.aga.service.model.Transaction;
+import pl.aga.service.model.TransactionHistory;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -24,7 +27,11 @@ public class BankService {
         }
         accountRepository.saveBalance(transaction.getFrom(),fromBalance - transaction.getAmount());
         accountRepository.saveBalance(transaction.getTo(),toBalance + transaction.getAmount());
+
+        accountRepository.addTransactionHistory(new TransactionHistory(transaction));
     }
+
+
 
 
 }

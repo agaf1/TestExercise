@@ -1,9 +1,14 @@
 package pl.aga.repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import pl.aga.service.model.Transaction;
+import pl.aga.service.model.TransactionHistory;
+
+import java.util.List;
 
 public interface AccountRepository {
      Double getBalance(String account);
      void saveBalance(String account, Double amount);
+     void addTransactionHistory(TransactionHistory transactionHistory);
+     List<Transaction> getTransactions(String account);
+
 }
