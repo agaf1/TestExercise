@@ -11,13 +11,15 @@ public class BankService {
     private final ValidationService validationService;
     private final AccountRepository accountRepository;
     public void transfer(Transaction transaction){
-        log.info("transfer "+ transaction);
+        log.info("start transfer "+ transaction);
         validationService.checkInput(transaction);
 
         Double fromBalance = accountRepository.getBalance(transaction.getFrom());
         Double toBalance = accountRepository.getBalance(transaction.getTo());
 
         if(fromBalance< transaction.getAmount()){
+            log.error("transfer fail, to low cash on account={}, balance={}, transfer amount={}"
+                    , transaction.getFrom(),fromBalance,transaction.getAmount());
             throw new IllegalArgumentException("to low cash on FromAccount ");
         }
         accountRepository.saveBalance(transaction.getFrom(),fromBalance - transaction.getAmount());
