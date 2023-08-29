@@ -5,4 +5,5 @@ import java.util.Map;
 
 public interface AccountRepository {
      Double getBalance(String account);
+     void saveBalance(String account, Double amount);
 }
