@@ -1,20 +1,18 @@
 package pl.aga.service;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import pl.aga.service.model.Transfer;
+import pl.aga.service.model.Transaction;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.*;
 class ValidationServiceTest {
     private ValidationService valid = new ValidationService();
 
     @Test
     void should_throw_exception_when_from_is_blank(){
-        Transfer transfer = new Transfer("   ","ala",56.98);
+        Transaction transaction = new Transaction("   ","ala",56.98);
 
-        assertThatThrownBy(()->valid.checkInput(transfer))
+        assertThatThrownBy(()->valid.checkInput(transaction))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing from");
 
@@ -22,11 +20,11 @@ class ValidationServiceTest {
 
     @Test
     void should_throw_exception_when_to_is_blank(){
-        Transfer transfer = Mockito.mock(Transfer.class);
-        Mockito.when(transfer.getFrom()).thenReturn("from");
-        Mockito.when(transfer.getTo()).thenReturn("");
+        Transaction transaction = Mockito.mock(Transaction.class);
+        Mockito.when(transaction.getFrom()).thenReturn("from");
+        Mockito.when(transaction.getTo()).thenReturn("");
 
-        assertThatThrownBy(()->valid.checkInput(transfer))
+        assertThatThrownBy(()->valid.checkInput(transaction))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Missing to");
 

@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.aga.repository.AccountRepository;
-import pl.aga.service.model.Transfer;
+import pl.aga.service.model.Transaction;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -18,17 +18,17 @@ class BankServiceTest {
     @Mock
     private AccountRepository accountRepository ;
 
-    private final Transfer transfer = new Transfer("account1","account2",5);
+    private final Transaction transaction = new Transaction("account1","account2",5);
     private final BankService bankService = new BankService(validationService,accountRepository);
 
     @Test
     void should_not_transfer_when_from_account_has_to_low_cash(){
         //given
 
-        when(accountRepository.getBalance(eq(transfer.getFrom()))).thenReturn(Double.valueOf(2));
+        when(accountRepository.getBalance(eq(transaction.getFrom()))).thenReturn(Double.valueOf(2));
 
         //when
-        assertThatThrownBy(()->bankService.transfer(transfer))
+        assertThatThrownBy(()->bankService.transfer(transaction))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("to low cash on FromAccount ");
         //then
@@ -36,14 +36,14 @@ class BankServiceTest {
     @Test
     void should_transfer_when_from_account_has_enough_cash(){
 
-        when(accountRepository.getBalance(eq(transfer.getFrom()))).thenReturn(Double.valueOf(7));
-        when(accountRepository.getBalance(eq(transfer.getTo()))).thenReturn(Double.valueOf(3));
+        when(accountRepository.getBalance(eq(transaction.getFrom()))).thenReturn(Double.valueOf(7));
+        when(accountRepository.getBalance(eq(transaction.getTo()))).thenReturn(Double.valueOf(3));
 
-        bankService.transfer(transfer);
+        bankService.transfer(transaction);
 
-        Mockito.verify(accountRepository).saveBalance(eq(transfer.getFrom()),eq(2d));
+        Mockito.verify(accountRepository).saveBalance(eq(transaction.getFrom()),eq(2d));
 
-        Mockito.verify(accountRepository).saveBalance(eq(transfer.getTo()),eq(8.0));
+        Mockito.verify(accountRepository).saveBalance(eq(transaction.getTo()),eq(8.0));
 
     }
 

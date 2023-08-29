@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @ToString
-public class Transfer {
+public class Transaction {
     String from;
     String to;
     double amount;
