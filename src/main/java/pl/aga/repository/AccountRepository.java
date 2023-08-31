@@ -9,6 +9,6 @@ public interface AccountRepository {
      Double getBalance(String account);
      void saveBalance(String account, Double amount);
      void addTransactionHistory(TransactionHistory transactionHistory);
-     List<Transaction> getTransactions(String account);
+     List<TransactionHistory> getTransactions(String account);
 
 }

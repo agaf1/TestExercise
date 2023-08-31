@@ -14,4 +14,9 @@ public class TransactionHistory {
         this.transaction = transaction;
         this.dateTime = ZonedDateTime.now();
     }
+
+    public TransactionHistory(Transaction transaction, ZonedDateTime dateTime){
+        this.transaction = transaction;
+        this.dateTime = dateTime;
+    }
 }
