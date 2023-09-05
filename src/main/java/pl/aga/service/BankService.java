@@ -39,9 +39,9 @@ public class BankService {
     List<TransactionHistory> getTransaction(String account, Sort sort) {
         List<TransactionHistory> transactions = accountRepository.getTransactions(account);
 
-        List<TransactionHistory> sortedTransactions = new ArrayList<>();
+        List<TransactionHistory> sortedTransactions;
 
-        Comparator<TransactionHistory> comparator = (t1,t2) -> t1.getDateTime().compareTo(t2.getDateTime());
+        Comparator<TransactionHistory> comparator = Comparator.comparing(TransactionHistory::getDateTime);
 
         if (sort.equals(Sort.DESC)) {
             comparator = comparator.reversed();
